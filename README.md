@@ -1,5 +1,5 @@
-#Integrating PageFactory in a Prism Project
-##Intro
+# Integrating PageFactory in a Prism Project
+## Intro
 The [Page Factory concept](https://github.com/ahmad-crossplatform/XamarinFormsPageFactoryPOC) would be useless if does not work with MVVM frameworks. 
 Here we are doing a POC of how the Page Pactory can work as along with Prism.  We chose Prism because it is one of the biggest and most known frameworks , and because we use it usually. 
 
