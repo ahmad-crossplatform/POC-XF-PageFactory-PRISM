@@ -15,7 +15,7 @@ namespace PageFactoryPrism.ViewModels
             WelcomeMessage = "This is Page 2";
         }
         
-        [Text]
+        [Label]
         public string WelcomeMessage { get; set; }
     }
 }

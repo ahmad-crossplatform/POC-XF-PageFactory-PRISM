@@ -2,7 +2,7 @@
 
 namespace PageFactoryPrism.Attributes
 {
-    public class EditableAttribute : Attribute
+    public class EntryAttribute : Attribute
     {
     }
 }

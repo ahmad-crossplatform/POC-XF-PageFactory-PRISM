@@ -2,7 +2,7 @@
 
 namespace PageFactoryPrism.Attributes
 {
-    public class EditorAttribute : Attribute    
+    public class LongTextAttribute : Attribute    
     {
     }
 }

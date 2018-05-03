@@ -26,7 +26,7 @@ namespace PageFactoryPrism.ViewModels
             PrismNavigateCommand = new DelegateCommand(DoPrismNavigation);
         }
 
-        [Text, Editable, Title("Give a short description"), Required]
+        [Entry, Title("Give a short description"), Required]
         public string ShortDescription2
         {
             get => _shortDescription2;
@@ -50,7 +50,7 @@ namespace PageFactoryPrism.ViewModels
         }
 
 
-        [Text, Editor, Editable, Title("Describe the problem in details")]
+        [LongText,  Title("Describe the problem in details")]
         public string LongDescription
         {
             get => _longDescription;
@@ -63,7 +63,7 @@ namespace PageFactoryPrism.ViewModels
         }
 
 
-        [Text, Title("Summary") , Required]
+        [Label, Title("Summary") , Required]
         public string Summary
         {
             get => _summary;
@@ -75,7 +75,7 @@ namespace PageFactoryPrism.ViewModels
             }
         }
 
-        [Text, Editable, Title("Give a short description"), Required]
+        [Entry, Title("Give a short description"), Required]
         public string ShortDescription
         {
             get => _shortDescription;
