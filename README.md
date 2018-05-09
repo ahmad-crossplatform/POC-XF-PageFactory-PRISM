@@ -4,6 +4,8 @@
 Updating xamarin.forms to 3.0.0.446417 while having prism make the app 
 breaks as if it loses the track of navigation stack.  
 More investigation needed!!
+
+To solve this issue we create empty pages and register them for navigation and then fill them with ProducedView from the pagefactory. 
 ```
 ## Intro
 The [Page Factory concept](https://github.com/ahmad-crossplatform/XamarinFormsPageFactoryPOC) would be useless if does not work with MVVM frameworks. 
