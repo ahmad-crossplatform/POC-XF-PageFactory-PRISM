@@ -10,9 +10,7 @@ namespace PageFactoryPrism.CustomControls
 {
 	public class ProducedView : ContentView
 	{
-		public ProducedView ()
-		{
-		}
+	
 
         protected override void OnBindingContextChanged()
         {
