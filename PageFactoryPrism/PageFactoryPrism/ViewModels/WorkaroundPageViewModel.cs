@@ -1,26 +1,25 @@
-﻿using System.Windows.Input;
-using PageFactoryPrism.Attributes;
+﻿using PageFactoryPrism.Attributes;
 using PageFactoryPrism.Views;
 using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Navigation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PageFactoryPrism.ViewModels
 {
-    public interface ITestPageViewModel
-    {
-    }
-
-    [Title("Produced Page 1")]
-    public class ProducedPage1ViewModel:ViewModelBase, ITestPageViewModel
-    {
-      
-        public ProducedPage1ViewModel(INavigationService navigationService) : base(navigationService)
-        {            
-            Summary = "Something";
-            PageFactoryNavigateCommand = new Command(DoPageFactoryNavigation);
-            PrismNavigateCommand = new DelegateCommand(DoPrismNavigation);
-        }
+	public class WorkaroundPageViewModel : ViewModelBase
+	{
+        public WorkaroundPageViewModel(INavigationService navigationService):base (navigationService)
+        {
+          
+                Summary = "Something";
+                PageFactoryNavigateCommand = new Command(DoPageFactoryNavigation);
+                PrismNavigateCommand = new DelegateCommand(DoPrismNavigation);
+       }
 
         private string _shortDescription;
         private string _shortDescription2;
@@ -43,7 +42,7 @@ namespace PageFactoryPrism.ViewModels
 
         private async void DoPrismNavigation()
         {
-            await NavigationService.NavigateAsync(nameof(Page3)); 
+            await NavigationService.NavigateAsync(nameof(Page3));
         }
 
         private async void DoPageFactoryNavigation()
@@ -52,7 +51,7 @@ namespace PageFactoryPrism.ViewModels
         }
 
 
-        [LongText,  Title("Describe the problem in details")]
+        [LongText, Title("Describe the problem in details")]
         public string LongDescription
         {
             get => _longDescription;
@@ -65,7 +64,7 @@ namespace PageFactoryPrism.ViewModels
         }
 
 
-        [Label, Title("Summary") , Required]
+        [Label, Title("Summary"), Required]
         public string Summary
         {
             get => _summary;
@@ -89,13 +88,12 @@ namespace PageFactoryPrism.ViewModels
             }
         }
 
-     
+
 
         [Title("PageFactory Navigate")]
         public ICommand PageFactoryNavigateCommand { get; set; }
 
         [Title("Prism Navigate ")]
         public ICommand PrismNavigateCommand { get; set; }
-
     }
 }

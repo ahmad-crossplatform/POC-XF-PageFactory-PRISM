@@ -50,6 +50,7 @@ namespace PageFactoryPrism
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<FirstPage, FirstPageViewModel>();
             containerRegistry.RegisterForNavigation<Page3>();
+            containerRegistry.RegisterForNavigation<WorkaroundPage,WorkaroundPageViewModel>();
         }
     }
 }

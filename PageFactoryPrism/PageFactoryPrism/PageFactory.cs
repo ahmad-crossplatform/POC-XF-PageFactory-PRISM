@@ -42,28 +42,33 @@ namespace PageFactoryPrism
         
         public Page CreatePage(INotifyPropertyChanged viewModel, Type type)
         {
-            var page = new ContentPage();
-            var tableView = new TableView {HasUnevenRows = true};
+            var page = new ContentPage
+            {
+                BindingContext = viewModel
+            };
+            if (viewModel.GetType().CustomAttributes.Any(c => c.AttributeType == typeof(TitleAttribute))) // Page Level
+            {
+                var titleAttribte = viewModel.GetType().CustomAttributes.Single(c => c.AttributeType == typeof(TitleAttribute));
+                page.Title = titleAttribte.ConstructorArguments[0].Value.ToString();
+            }
+            page.Content = CreateView(viewModel);
+            return page;
+        }
+
+        public static View CreateView(INotifyPropertyChanged viewModel)
+        {
+            var tableView = new TableView { HasUnevenRows = true };
             var tableRoot = new TableRoot();
             var tableSection = new TableSection();
 
             var stackLayout = new StackLayout();
-            page.Content = stackLayout;
-            page.BindingContext = viewModel;
-
-            if (type.CustomAttributes.Any(c => c.AttributeType == typeof(TitleAttribute))) // Page Level
-            {
-                var titleAttribte = type.CustomAttributes.Single(c => c.AttributeType == typeof(TitleAttribute));
-                page.Title = titleAttribte.ConstructorArguments[0].Value.ToString();
-            }
-
-            foreach (var propertyInfo in type.GetProperties())
+            foreach (var propertyInfo in viewModel.GetType().GetProperties())
             {
                 if (!propertyInfo.CustomAttributes.Any()) continue;
                 var child = new RequiredCell();
-                var isRequired = false; 
+                var isRequired = false;
                 var title = "";
-                
+
                 foreach (var attribute in propertyInfo.CustomAttributes)
                 {
                     switch (attribute.AttributeType.Name)
@@ -72,7 +77,7 @@ namespace PageFactoryPrism
                             title = attribute.ConstructorArguments[0].Value.ToString();
                             break;
                         case nameof(RequiredAttribute):
-                            isRequired = true; 
+                            isRequired = true;
                             break;
                         case nameof(LabelAttribute):
                             child = new RequiredLabelCell();
@@ -91,22 +96,22 @@ namespace PageFactoryPrism
                             child.SetBinding(RequiredSwitchCell.IsToggledProperty, propertyInfo.Name, BindingMode.TwoWay);
                             break;
                         case nameof(DateAttribute):
-                            child = new RequiredDatePickerCell ();
+                            child = new RequiredDatePickerCell();
                             child.SetBinding(RequiredDatePickerCell.DateProperty, propertyInfo.Name, BindingMode.TwoWay);
                             break;
                         case nameof(CommandAttribute):
                             var commandName = attribute.ConstructorArguments[0].Value.ToString();
-                            var command = (ICommand)type.GetProperties().Single(p => p.Name == commandName).GetValue(viewModel);
+                            var command = (ICommand)viewModel.GetType().GetProperties().Single(p => p.Name == commandName).GetValue(viewModel);
                             child.Command = command;
                             break;
                     }
                 }
                 child.Title = title;
-                child.IsRequired = isRequired; 
+                child.IsRequired = isRequired;
                 //Add the button
                 if (propertyInfo.PropertyType == typeof(ICommand) || propertyInfo.PropertyType == typeof(Command))
                 {
-                    var command = (ICommand) propertyInfo.GetValue(page.BindingContext);
+                    var command = (ICommand)propertyInfo.GetValue(viewModel);
                     var button = new Button
                     {
                         Text = title,
@@ -119,11 +124,10 @@ namespace PageFactoryPrism
                 }
                 tableSection.Add(child);
             }
-
             tableRoot.Add(tableSection);
             tableView.Root = tableRoot;
             stackLayout.Children.Add(tableView);
-            return page;
+            return stackLayout; 
         }
 
         public async Task NavigateAsync<TDestination>(bool isAnimated = true) where TDestination : INotifyPropertyChanged

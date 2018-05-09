@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Prism.Behaviors;
 using Prism.Common;
 using Prism.Ioc;
@@ -38,6 +39,12 @@ namespace PageFactoryPrism.Helpers
             {
                 return base.CreatePage(segment);
             }
+        }
+
+
+        public override Task NavigateAsync(string name)
+        {
+            return base.NavigateAsync(name);
         }
     }
 }
