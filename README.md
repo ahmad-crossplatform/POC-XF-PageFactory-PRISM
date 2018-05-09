@@ -1,4 +1,10 @@
 # Integrating PageFactory in a Prism Project
+## Important Note
+```
+Updating xamarin.forms to 3.0.0.446417 while having prism make the app 
+breaks as if it loses the track of navigation stack.  
+More investigation needed!!
+```
 ## Intro
 The [Page Factory concept](https://github.com/ahmad-crossplatform/XamarinFormsPageFactoryPOC) would be useless if does not work with MVVM frameworks. 
 Here we are doing a POC of how the Page Pactory can work as along with Prism.  We chose Prism because it is one of the biggest and most known frameworks , and because we use it usually. 
