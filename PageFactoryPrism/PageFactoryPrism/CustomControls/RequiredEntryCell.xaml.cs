@@ -6,16 +6,18 @@ namespace PageFactoryPrism.CustomControls
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RequiredEntryCell : RequiredCell
     {
-        
-        public static readonly BindableProperty TextProperty =
-            BindableProperty.Create(nameof(Text), typeof(string), typeof(RequiredEntryCell), "",
-                propertyChanged: OnValuePropertyChanged);
 
         public RequiredEntryCell()
         {
             InitializeComponent();
             Entry.TextChanged += OnTextChanged;
         }
+
+
+        public static readonly BindableProperty TextProperty =
+            BindableProperty.Create(nameof(Text), typeof(string), typeof(RequiredEntryCell), "",
+                propertyChanged: OnValuePropertyChanged);
+
 
         public string Text
         {

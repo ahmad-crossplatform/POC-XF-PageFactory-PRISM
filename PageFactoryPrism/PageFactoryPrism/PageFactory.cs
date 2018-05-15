@@ -55,12 +55,18 @@ namespace PageFactoryPrism
             return page;
         }
 
-        public static View CreateView(INotifyPropertyChanged viewModel)
+        public View CreateView(INotifyPropertyChanged viewModel)
         {
+
             var tableView = new TableView { HasUnevenRows = true };
             var tableRoot = new TableRoot();
             var tableSection = new TableSection();
 
+            var requiredSection = new RequiredEntryCell()
+            {
+                Text = "Test"
+            };
+            tableSection.Add(requiredSection); 
             var stackLayout = new StackLayout();
             foreach (var propertyInfo in viewModel.GetType().GetProperties())
             {

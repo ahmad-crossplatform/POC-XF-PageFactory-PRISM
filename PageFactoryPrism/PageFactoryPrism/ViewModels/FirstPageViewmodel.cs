@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using PageFactoryPrism.Views;
 using Prism.Commands;
 using Prism.Navigation;
 

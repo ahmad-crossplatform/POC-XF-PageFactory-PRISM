@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using System.ComponentModel;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PageFactoryPrism.CustomControls
@@ -7,13 +9,14 @@ namespace PageFactoryPrism.CustomControls
     public partial class RequiredLabelCell : RequiredCell
     {
         public static readonly BindableProperty TextProperty =
-            BindableProperty.Create(nameof(Text), typeof(string), typeof(RequiredLabelCell),
+            BindableProperty.Create(nameof(Text), typeof(string), typeof(RequiredLabelCell),"",
                 propertyChanged: OnTextPropertyChanged);
 
         public RequiredLabelCell()
         {
             InitializeComponent();
         }
+
 
         public string Text
         {
@@ -25,10 +28,7 @@ namespace PageFactoryPrism.CustomControls
         {
             var field = (RequiredLabelCell) bindable;
             field.InfoLabel.Text = newvalue.ToString();
-            if (string.IsNullOrEmpty(field.InfoLabel.Text) && field.IsRequired)
-                field.IsRequiredLabel.IsVisible = true;
-            else
-                field.IsRequiredLabel.IsVisible = false;
+            field.IsRequiredLabel.IsVisible = string.IsNullOrEmpty(field.InfoLabel.Text) && field.IsRequired;
         }
     }
 }

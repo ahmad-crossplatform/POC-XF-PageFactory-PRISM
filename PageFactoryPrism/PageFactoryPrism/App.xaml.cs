@@ -25,32 +25,26 @@ namespace PageFactoryPrism
         public App(IPlatformInitializer initializer) : base(initializer)
         {
 
-           
+
         }
 
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            await NavigationService.NavigateAsync($"NavigationPage/FirstPage"); 
+            await NavigationService.NavigateAsync($"NavigationPage/FirstPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             /*INavigationService has to be registered in both modes, named and unnamed.*/
             containerRegistry.Register<INavigationService, PageFactoryNavigationService>(NavigationServiceName);
-            containerRegistry.Register<INavigationService, PageFactoryNavigationService>(); 
+            containerRegistry.Register<INavigationService, PageFactoryNavigationService>();
 
-            containerRegistry.RegisterSingleton<IPageFactory, PageFactory>();
-            
-            containerRegistry.Register(typeof(ProducedPage1ViewModel));
-            /*Can be done this way also
-             containerRegistry.Register<ProducedPage1ViewModel, ProducedPage1ViewModel>(); 
-             */           
+            containerRegistry.Register<IPageFactory, PageFactory>();       
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<FirstPage, FirstPageViewModel>();
             containerRegistry.RegisterForNavigation<Page3>();
-            containerRegistry.RegisterForNavigation<WorkaroundPage,WorkaroundPageViewModel>();
         }
     }
 }
