@@ -1,12 +1,5 @@
 # Integrating PageFactory in a Prism Project
-## Important Note
-```
-Updating xamarin.forms to 3.0.0.446417 while having prism make the app 
-breaks as if it loses the track of navigation stack.  
-More investigation needed!!
 
-To solve this issue we create empty pages and register them for navigation and then fill them with ProducedView from the pagefactory. 
-```
 ## Intro
 The [Page Factory concept](https://github.com/ahmad-crossplatform/XamarinFormsPageFactoryPOC) would be useless if does not work with MVVM frameworks. 
 Here we are doing a POC of how the Page Pactory can work as along with Prism.  We chose Prism because it is one of the biggest and most known frameworks , and because we use it usually. 
@@ -24,29 +17,23 @@ public class PageFactoryNavigationService:PageNavigationService
 	{
 		_pageFactory = pageFactory;
 	}
-	protected override Page GetCurrentPage()
-	{
-		if (Application.Current.MainPage == null) return base.GetCurrentPage(); // If it is the first page . 
-		if (_applicationProvider.MainPage is NavigationPage navigationPage)
-		{
-			var currentPage = navigationPage.CurrentPage;
-			return currentPage; 
-		}
-		return base.GetCurrentPage();
-	}
-	protected override Page CreatePage(string segment)
-	{
-		if (Type.GetType(segment) != null) //in this case it should get the fully qualified assembly name
-		{
-			var type = Type.GetType(segment);   
-			var page = _pageFactory.CreatePage(type);
-			return page;
-		}
-		else
-		{
-			return base.CreatePage(segment);
-		}
-	}
+    protected override Page GetCurrentPage()
+    {
+        return _applicationProvider?.MainPage?.Navigation?.NavigationStack[0]; 
+    }
+    protected override Page CreatePage(string segment)
+    {
+        if (Type.GetType(segment) != null) //in this case it should get the fully qualified assembly name
+        {
+            var type = Type.GetType(segment);   
+            var page = _pageFactory.CreatePage(type);
+            return page;
+        }
+        else
+        {
+            return base.CreatePage(segment);
+        }
+    }
 }
 ```
 
@@ -79,7 +66,7 @@ We have modified the PageFactory class so it takes the designated viewmodel from
 ```
 ### Registrations on `App.cs` 
 Here we simply Register `PageFactory`, `PageFactoryNavigationService`, the viewmodels ,  and the other pages of the app. 
-**Note:** *We need to register the ViewModels which are fed to the PageFactory so their independences can be resolved.*  
+**Note:** *We do not need to register the ViewModels which are fed to the PageFactory as they are resolved by the container*  
 **Note:** *We need to register `PageFactoryNavigationService` twice; once with a named index and once without to make sure that Prism will always refer to our implementation.*
 
 ```C#
@@ -94,15 +81,12 @@ Here we simply Register `PageFactory`, `PageFactoryNavigationService`, the viewm
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-  /*INavigationService has to be registered in both modes, named and unnamed.*/
+            /*INavigationService has to be registered in both modes, named and unnamed.*/
             containerRegistry.Register<INavigationService, PageFactoryNavigationService>(NavigationServiceName);
-            containerRegistry.Register<INavigationService, PageFactoryNavigationService>(); 
-            
-            containerRegistry.Register(typeof(ProducedPage1ViewModel));
-            /*Can be done this way also
-             containerRegistry.Register<ProducedPage1ViewModel, ProducedPage1ViewModel>(); 
-             */           
-    
+            containerRegistry.Register<INavigationService, PageFactoryNavigationService>();
+
+            containerRegistry.Register<IPageFactory, PageFactory>();       
+
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<FirstPage, FirstPageViewModel>();
             containerRegistry.RegisterForNavigation<Page3>();

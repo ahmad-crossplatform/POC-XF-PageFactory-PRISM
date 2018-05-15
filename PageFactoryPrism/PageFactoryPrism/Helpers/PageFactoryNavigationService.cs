@@ -19,13 +19,7 @@ namespace PageFactoryPrism.Helpers
         }
         protected override Page GetCurrentPage()
         {
-            if (Application.Current.MainPage == null) return base.GetCurrentPage(); // If it is the first page . 
-            if (_applicationProvider.MainPage is NavigationPage navigationPage)
-            {
-                var currentPage = navigationPage.CurrentPage;
-                return currentPage; 
-            }
-            return base.GetCurrentPage();
+            return _applicationProvider?.MainPage?.Navigation?.NavigationStack[0]; 
         }
         protected override Page CreatePage(string segment)
         {
@@ -39,12 +33,6 @@ namespace PageFactoryPrism.Helpers
             {
                 return base.CreatePage(segment);
             }
-        }
-
-
-        public override Task NavigateAsync(string name)
-        {
-            return base.NavigateAsync(name);
         }
     }
 }
